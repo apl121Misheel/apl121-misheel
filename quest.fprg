@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="4.2">
+    <attributes>
+        <attribute name="name" value="quest"/>
+        <attribute name="authors" value="User"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2026-10-27 10:02:50 PM"/>
+        <attribute name="created" value="VXNlcjtERVNLVE9QLTY1UEo3S0M7MjAyNi0xMC0yNzswNzo1OTowNiBQTTsyNzQ3"/>
+        <attribute name="edited" value="VXNlcjtERVNLVE9QLTY1UEo3S0M7MjAyNi0xMC0yNzsxMDowMjo1MCBQTTsxOzI4MzY="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="Pm" type="Real" array="True" size="7"/>
+            <declare name="category" type="String" array="True" size="7"/>
+            <declare name="tempStr" type="String" array="False" size=""/>
+            <declare name="i, j, k" type="Integer" array="False" size=""/>
+            <declare name="temp" type="Real" array="False" size=""/>
+            <for variable="i" start="0" end="6" direction="inc" step="1">
+                <input variable="Pm[i]"/>
+                <do expression="Pm[i] &lt; 0 ||Pm [i] &gt; 500"/>
+                <assign variable="category[i]" expression="GetAQIClass(Pm[i])"/>
+                <output expression="&quot;&#1256;&#1076;&#1257;&#1088; &quot; &amp; (i + 1) &amp; &quot;: PM2.5 = &quot; &amp; Pm[i] &amp; &quot; -&gt; &quot; &amp; category[i]" newline="True"/>
+            </for>
+            <for variable="i" start="0" end="5" direction="inc" step="1">
+                <for variable="j" start="i+1" end="6" direction="inc" step="1">
+                    <if expression="Pm[i] &lt; Pm[j]">
+                        <then>
+                            <assign variable="temp" expression="Pm[i]"/>
+                            <assign variable="Pm[i]" expression="Pm[j]"/>
+                            <assign variable="Pm[j]" expression="temp"/>
+                            <assign variable="tempStr" expression="category[i]"/>
+                            <assign variable="category[i]" expression="category[j]"/>
+                            <assign variable="category[j]" expression="tempStr"/>
+                        </then>
+                        <else/>
+                    </if>
+                </for>
+            </for>
+            <output expression="&quot;&#1061;&#1040;&#1052;&#1043;&#1048;&#1049;&#1053; &#1041;&#1054;&#1061;&#1048;&#1056; 3 &#1256;&#1044;&#1256;&#1056;&quot;" newline="True"/>
+            <for variable="k" start="0" end="2" direction="inc" step="1">
+                <output expression="&quot;&#1061;&#1072;&#1084;&#1075;&#1080;&#1081;&#1085; &#1073;&#1086;&#1093;&#1080;&#1088; &quot; &amp; (k + 1) &amp; &quot;-&#1088; &#1257;&#1076;&#1257;&#1088;: PM2.5 = &quot; &amp; Pm[k] &amp; &quot; (&quot; &amp; category[k] &amp; &quot;)&quot;" newline="True"/>
+            </for>
+        </body>
+    </function>
+    <function name="GetAQIClass" type="String" variable="result">
+        <parameters>
+            <parameter name="Pm" type="Real" array="False"/>
+        </parameters>
+        <body>
+            <declare name="result" type="String" array="False" size=""/>
+            <if expression="Pm &lt;= 50">
+                <then>
+                    <assign variable="result" expression="&quot;&#1057;&#1072;&#1081;&#1085;&quot;"/>
+                </then>
+                <else>
+                    <if expression="Pm &lt;= 100">
+                        <then>
+                            <assign variable="result" expression="&quot;&#1044;&#1091;&#1085;&#1076; &#1079;&#1101;&#1088;&#1101;&#1075;&quot;"/>
+                        </then>
+                        <else>
+                            <if expression="Pm &lt;= 150">
+                                <then>
+                                    <assign variable="result" expression="&quot;&#1057;&#1257;&#1088;&#1257;&#1075; &#1085;&#1257;&#1083;&#1257;&#1257;&#1090;&#1101;&#1081;&quot;"/>
+                                </then>
+                                <else>
+                                    <if expression="Pm &lt;= 200">
+                                        <then>
+                                            <assign variable="result" expression="&quot;&#1052;&#1091;&#1091;&quot;"/>
+                                        </then>
+                                        <else>
+                                            <assign variable="result" expression="&quot;&#1040;&#1102;&#1091;&#1083;&#1090;&#1072;&#1081;&quot;"/>
+                                        </else>
+                                    </if>
+                                </else>
+                            </if>
+                        </else>
+                    </if>
+                </else>
+            </if>
+        </body>
+    </function>
+</flowgorithm>
